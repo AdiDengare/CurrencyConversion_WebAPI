@@ -15,17 +15,28 @@ namespace Webapi_Project.Controllers
     public class CurrencyController : Controller
     {
 
-        private readonly ICurrencyRate currency;
+        private readonly ICurrencyService currency;
 
-        public CurrencyController(ICurrencyRate currency)
+        public CurrencyController(ICurrencyService currency)
         {
             this.currency = currency;
         }
         [HttpPost]
-        public ActionResult GetConversionResponse(List<CurrencyRate> currencyRate)
+        public ConversionResponse GetConvertedAmount(ConversionRequest conversionRequest)
         {
-            var result = currency.GetAmount(currencyRate);
-            return Ok(result);
+            ConversionResponse res = new ConversionResponse();
+            res.RateResponses = new List<CurrencyRateResponse>();
+            foreach (var item in conversionRequest.RateRequests)
+            {
+                double convertRate = currency.ExchangeRateService(item.from, item.to);
+                CurrencyRateResponse rateResponse = new CurrencyRateResponse();
+                rateResponse.from = item.from;
+                rateResponse.to = item.to;
+                rateResponse.amount = item.amount;
+                rateResponse.convertedamount = item.amount * convertRate;
+                res.RateResponses.Add(rateResponse);
+            }
+            return res;
         }
     }
 }

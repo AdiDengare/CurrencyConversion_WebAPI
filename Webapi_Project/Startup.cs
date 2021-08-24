@@ -28,7 +28,7 @@ namespace Webapi_Project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddSingleton<ICurrencyRate, CurrencyConversionService>();
+            services.AddSingleton<ICurrencyService, CurrencyConversionService>();
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {

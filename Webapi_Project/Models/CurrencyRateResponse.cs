@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Webapi_Project.Models
 {
-    public class ConversionAmount
+    public class CurrencyRateResponse
     {
         public string from { get; set; }
         public string to { get; set; }

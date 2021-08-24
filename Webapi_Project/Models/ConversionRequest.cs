@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Webapi_Project.Models
 {
-    public class ConversionResponse
+    public class ConversionRequest
     {
-        public List<CurrencyRateResponse> RateResponses { get; set; }
+        public List<CurrencyRateRequest> RateRequests  { get; set; }
     }
 }
