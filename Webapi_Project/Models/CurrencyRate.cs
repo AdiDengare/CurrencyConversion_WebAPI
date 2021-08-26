@@ -7,9 +7,9 @@ namespace Webapi_Project.Models
 {
     public class CurrencyRate
     {
-            public string from { get; set; }
-            public string to { get; set; }
-            public double amount { get; set; }
+            public string From { get; set; }
+            public string To { get; set; }
+            public double Amount { get; set; }
             
             
 

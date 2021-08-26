@@ -15,28 +15,56 @@ namespace Webapi_Project.Controllers
     public class CurrencyController : Controller
     {
 
-        private readonly ICurrencyService currency;
+        private readonly ICurrencyService _currency;
 
         public CurrencyController(ICurrencyService currency)
         {
-            this.currency = currency;
+            _currency = currency;
         }
+        
         [HttpPost]
-        public ConversionResponse GetConvertedAmount(ConversionRequest conversionRequest)
+        public ConversionResponse GetExchangeAmount(ConversionRequest conversionRequest)
         {
             ConversionResponse res = new ConversionResponse();
             res.RateResponses = new List<CurrencyRateResponse>();
-            foreach (var item in conversionRequest.RateRequests)
+            List<CurrencyRateRequest> List = conversionRequest.RateRequests;
+            do
             {
-                double convertRate = currency.ExchangeRateService(item.from, item.to);
-                CurrencyRateResponse rateResponse = new CurrencyRateResponse();
-                rateResponse.from = item.from;
-                rateResponse.to = item.to;
-                rateResponse.amount = item.amount;
-                rateResponse.convertedamount = item.amount * convertRate;
-                res.RateResponses.Add(rateResponse);
-            }
-            return res;
+                
+                var splittted = List.Select((v, i) => new { val = v, idx = i })
+                                    .GroupBy(x => x.idx / 2)
+                                    .Select(g => g.Select(y => y.val).ToList())
+                                    .ToList();
+                
+                foreach (var batchOfThree in splittted)
+                {
+                    List<Task<ExchangeRate>> tasks = new List<Task<ExchangeRate>>();
+                    foreach (var rate in batchOfThree)
+                    {
+                        var t = _currency.GetExchangeRate(rate.From, rate.To);
+                        tasks.Add(t);
+                    }
+                    
+                    Task[] listOfArray = tasks.ToArray();
+                    Task.WaitAll(listOfArray);
+
+                    foreach (var item in tasks)
+                    {
+                        ExchangeRate exgRate = item.Result;
+
+                        var matchReqRate = conversionRequest.RateRequests.Find(x => x.From == exgRate.From && x.To == exgRate.To);
+                        var convertedAmount = matchReqRate.Amount * exgRate.ConvertedRate;
+                        CurrencyRateResponse rateResponse = new CurrencyRateResponse();
+                        rateResponse.From = exgRate.From;
+                        rateResponse.To = exgRate.To;
+                        rateResponse.Amount = matchReqRate.Amount;
+                        rateResponse.ConvertedAmount = matchReqRate.Amount * convertedAmount;
+                        res.RateResponses.Add(rateResponse);
+                    }
+                    
+                }
+                return res;
+            } while (List.Count > 0);
         }
     }
 }
