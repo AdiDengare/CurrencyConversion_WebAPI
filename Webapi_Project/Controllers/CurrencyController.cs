@@ -17,9 +17,12 @@ namespace Webapi_Project.Controllers
 
         private readonly ICurrencyService _currency;
 
-        public CurrencyController(ICurrencyService currency)
+        private readonly ILogger _logger;
+
+        public CurrencyController(ICurrencyService currency, ILogger ilogger)
         {
             _currency = currency;
+            _logger = ilogger; 
         }
         
         [HttpPost]
@@ -28,6 +31,7 @@ namespace Webapi_Project.Controllers
             ConversionResponse res = new ConversionResponse();
             res.RateResponses = new List<CurrencyRateResponse>();
             List<CurrencyRateRequest> List = conversionRequest.RateRequests;
+            string RequestJsonString = JsonConvert.SerializeObject(conversionRequest);
             do
             {
                 
@@ -63,7 +67,10 @@ namespace Webapi_Project.Controllers
                     }
                     
                 }
+                string ResponseJsonString = JsonConvert.SerializeObject(res);
+                _logger.LogData(RequestJsonString, ResponseJsonString);
                 return res;
+                
             } while (List.Count > 0);
         }
     }

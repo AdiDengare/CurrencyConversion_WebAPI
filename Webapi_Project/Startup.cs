@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Webapi_Project.Services;
+using Webapi_Project.Models;
 
 namespace Webapi_Project
 {
@@ -29,6 +31,8 @@ namespace Webapi_Project
         {
             services.AddOptions();
             services.AddSingleton<ICurrencyService, CurrencyConversionService>();
+            services.AddSingleton<Services.ILogger, InMemoryLogger>();
+            services.AddSingleton<Services.ILogger, FileLogger>();
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +48,7 @@ namespace Webapi_Project
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -1,0 +1,1 @@
+{"RateRequests":[{"From":"USD","To":"INR","Amount":34.0},{"From":"AFN","To":"USD","Amount":45.0},{"From":"ALL","To":"USD","Amount":67.0},{"From":"BBD","To":"USD","Amount":99.0},{"From":"USD","To":"BDT","Amount":567890.0}]}

@@ -11,6 +11,5 @@ namespace Webapi_Project.Services
         //double ExchangeRateService(string fromCurrency,string toCurrency);
 
         Task<ExchangeRate> GetExchangeRate(string fromCurrency, string toCurrency);
-
     }
 }

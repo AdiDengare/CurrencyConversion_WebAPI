@@ -1,0 +1,1 @@
+{"RateResponses":[{"From":"USD","To":"INR","Amount":34.0,"ConvertedAmount":85147.0296},{"From":"AFN","To":"USD","Amount":45.0,"ConvertedAmount":25.353},{"From":"ALL","To":"USD","Amount":67.0,"ConvertedAmount":43.309872},{"From":"BBD","To":"USD","Amount":99.0,"ConvertedAmount":4900.5},{"From":"BDT","To":"USD","Amount":111.0,"ConvertedAmount":144.77175}]}

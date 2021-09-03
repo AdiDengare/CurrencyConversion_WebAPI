@@ -15,7 +15,7 @@ namespace Webapi_Project.Services
         public async Task<ExchangeRate> GetExchangeRate(string fromCurrency, string toCurrency)
         {
             ExchangeRate exchangeRate = new ExchangeRate();
-            string urlString = "https://v6.exchangerate-api.com/v6/4cb40d1991f183f57e8b927c/latest/" + fromCurrency;
+            string urlString = "https://v6.exchangerate-api.com/v6/1ae2a1a979a46aceb87625fe/latest/" + fromCurrency;
             var webClient = new WebClient();
             var responsejson =  await webClient.DownloadStringTaskAsync(urlString);
             ExchangeRateApiResponse conversionRateApi = JsonConvert.DeserializeObject<ExchangeRateApiResponse>(responsejson);
